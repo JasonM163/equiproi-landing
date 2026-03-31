@@ -558,15 +558,14 @@
 
       // ── OPTION 2: Formspree (free up to 50/month) ──
       // Replace YOUR_FORM_ID with your Formspree form ID
-      //
-      // await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email: email })
-      // });
+      
+       await fetch('https://formspree.io/f/mqegbzwj', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ email: email })
+       });
 
       // For now, just show success state
-      console.log('Email captured:', email);
       form.style.display = 'none';
       success.style.display = 'block';
       if (note) note.style.display = 'none';
