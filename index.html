@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EquipROI — Capital Equipment Justification Made Simple</title>
+<meta name="description" content="Build bulletproof financial justifications for capital equipment purchases in minutes, not days. NPV, IRR, payback analysis with executive-ready PDF reports.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A0C10;
+    --surface: #12151C;
+    --surface2: #181C26;
+    --border: #232836;
+    --text: #E8EAED;
+    --muted: #8B91A0;
+    --dim: #555D6E;
+    --accent: #3B82F6;
+    --accent-glow: #3B82F620;
+    --green: #22C55E;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #0A0C10CC;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+  .logo span { color: var(--accent); }
+  .nav-cta {
+    padding: 10px 22px; border-radius: 8px; border: none;
+    background: var(--accent); color: #fff;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px #3B82F640; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 160px 32px 100px;
+    max-width: 800px; margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: 80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, #3B82F612 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    padding: 6px 16px; border-radius: 20px;
+    background: var(--accent-glow);
+    border: 1px solid #3B82F630;
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    letter-spacing: 0.03em;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5.5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  /* ── EMAIL FORM ── */
+  .email-form {
+    display: flex; gap: 10px;
+    max-width: 460px; margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+  .email-form input {
+    flex: 1; padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit; font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .email-form input:focus { border-color: var(--accent); }
+  .email-form input::placeholder { color: var(--dim); }
+  .email-form button {
+    padding: 14px 28px; border-radius: 10px; border: none;
+    background: var(--accent); color: #fff;
+    font-family: inherit; font-size: 15px; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .email-form button:hover { transform: translateY(-1px); box-shadow: 0 4px 24px #3B82F640; }
+  .form-note {
+    text-align: center; margin-top: 14px;
+    font-size: 13px; color: var(--dim);
+  }
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 16px 24px;
+    background: #22C55E18;
+    border: 1px solid #22C55E30;
+    border-radius: 10px;
+    color: var(--green);
+    font-weight: 600;
+    font-size: 15px;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  /* ── SCREENSHOT ── */
+  .screenshot-section {
+    max-width: 1060px;
+    margin: 0 auto 100px;
+    padding: 0 32px;
+  }
+  .screenshot-wrapper {
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: 0 20px 80px #00000060, 0 0 0 1px #ffffff08 inset;
+  }
+  .screenshot-bar {
+    padding: 12px 16px;
+    display: flex; gap: 8px; align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .screenshot-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--border);
+  }
+  .screenshot-bar span {
+    margin-left: 12px; font-size: 12px; color: var(--dim);
+    font-family: 'DM Mono', monospace;
+  }
+  .screenshot-body {
+    padding: 32px;
+    background: var(--bg);
+  }
+  .screenshot-body img {
+    width: 100%; border-radius: 8px; display: block;
+  }
+
+  /* mock app preview */
+  .mock-metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin-bottom: 20px;
+  }
+  .mock-metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .mock-metric-label {
+    font-size: 10px; color: var(--dim);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .mock-metric-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px; font-weight: 700;
+  }
+  .mock-verdict {
+    background: #22C55E12;
+    border: 1px solid #22C55E25;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .mock-verdict-text { font-weight: 700; color: var(--green); font-size: 15px; }
+  .mock-verdict-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .mock-badge {
+    padding: 8px 16px; border-radius: 8px;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 600;
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .problem {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+  .section-label {
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  .problem h2 {
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .problem p {
+    font-size: 16px; color: var(--muted);
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+  .pain-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .pain-card {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+  .pain-card:hover { border-color: #EF444440; }
+  .pain-icon {
+    font-size: 24px; margin-bottom: 12px;
+  }
+  .pain-card h3 {
+    font-size: 15px; font-weight: 700; margin-bottom: 8px;
+  }
+  .pain-card p {
+    font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0;
+  }
+
+  /* ── FEATURES ── */
+  .features {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+  .features h2 {
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.2; margin-bottom: 16px;
+  }
+  .features > p {
+    font-size: 16px; color: var(--muted); margin-bottom: 48px; max-width: 540px;
+  }
+  .feature-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
+  }
+  .feature-card {
+    padding: 28px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .feature-icon {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-glow);
+    border: 1px solid #3B82F625;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  .feature-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .feature-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── WHO ── */
+  .who {
+    max-width: 900px; margin: 0 auto;
+    padding: 80px 32px;
+  }
+  .who h2 {
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .who > p {
+    font-size: 16px; color: var(--muted); margin-bottom: 40px;
+  }
+  .who-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .who-card {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .who-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .who-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    max-width: 700px; margin: 0 auto;
+    padding: 100px 32px 120px;
+    text-align: center;
+  }
+  .bottom-cta h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .bottom-cta p {
+    font-size: 16px; color: var(--muted);
+    margin-bottom: 36px;
+    max-width: 480px;
+    margin-left: auto; margin-right: auto;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 13px; color: var(--dim);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 130px 20px 60px; }
+    .email-form { flex-direction: column; }
+    .email-form button { width: 100%; }
+    .mock-metrics { grid-template-columns: 1fr 1fr; }
+    .pain-grid, .who-grid { grid-template-columns: 1fr; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .screenshot-section { padding: 0 16px; margin-bottom: 60px; }
+    .screenshot-body { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Equip<span>ROI</span></div>
+  <a href="#signup" class="nav-cta">Get Early Access</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">Coming Soon — Join the Waitlist</div>
+  <h1>Stop guessing.<br>Start <em>proving</em> equipment ROI.</h1>
+  <p>Build bulletproof financial justifications for capital equipment purchases in minutes, not days. Professional-grade NPV, IRR, and payback analysis with executive-ready PDF reports.</p>
+
+  <div id="signup">
+    <form class="email-form" id="waitlistForm">
+      <input type="email" id="emailInput" placeholder="you@company.com" required>
+      <button type="submit">Join Waitlist</button>
+    </form>
+    <div class="form-success" id="formSuccess">
+      You're on the list. We'll be in touch soon.
+    </div>
+    <p class="form-note" id="formNote">Free early access for the first 50 signups. No spam, ever.</p>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<section class="screenshot-section">
+  <div class="screenshot-wrapper">
+    <div class="screenshot-bar">
+      <div class="screenshot-dot"></div>
+      <div class="screenshot-dot"></div>
+      <div class="screenshot-dot"></div>
+      <span>app.equiproi.com</span>
+    </div>
+    <div class="screenshot-body">
+      <div class="mock-verdict" style="margin-bottom: 20px;">
+        <div>
+          <div class="mock-verdict-text">✓ Investment Recommended</div>
+          <div class="mock-verdict-sub">Haas VF-4SS 5-Axis Mill · IRR exceeds hurdle rate by 24.2 points</div>
+        </div>
+        <div class="mock-badge">▤ Export PDF</div>
+      </div>
+      <div class="mock-metrics">
+        <div class="mock-metric">
+          <div class="mock-metric-label">Net Present Value</div>
+          <div class="mock-metric-value" style="color: var(--green);">$487,200</div>
+        </div>
+        <div class="mock-metric">
+          <div class="mock-metric-label">Internal Rate of Return</div>
+          <div class="mock-metric-value" style="color: var(--green);">34.2%</div>
+        </div>
+        <div class="mock-metric">
+          <div class="mock-metric-label">Simple Payback</div>
+          <div class="mock-metric-value" style="color: var(--accent);">2.8 yrs</div>
+        </div>
+        <div class="mock-metric">
+          <div class="mock-metric-label">Discounted Payback</div>
+          <div class="mock-metric-value" style="color: var(--accent);">3.1 yrs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="section-label">The Problem</div>
+  <h2>Equipment justifications shouldn't take a week and a prayer.</h2>
+  <p>You know the equipment is worth it. But leadership wants numbers — real numbers. And building that business case is painful.</p>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">⏱</div>
+      <h3>Days of spreadsheet wrangling</h3>
+      <p>Every analysis starts from scratch. Copy an old file, hope the formulas are right, spend hours reformatting. You're an engineer, not an Excel consultant.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📊</div>
+      <h3>Reports that don't impress</h3>
+      <p>You hand leadership a spreadsheet and they squint at it. No executive summary. No sensitivity analysis. No clear recommendation. It looks like homework, not a business case.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🎯</div>
+      <h3>Missing the financial angle</h3>
+      <p>You can prove the technical case. But NPV, IRR, WACC, MACRS depreciation? Most engineers didn't learn this in school — and finance teams speak a different language.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🔄</div>
+      <h3>Starting over every time</h3>
+      <p>No templates. No saved defaults. No institutional memory. Every equipment purchase is a blank canvas of frustration, even when you've done this exact analysis before.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-label">How It Works</div>
+  <h2>From inputs to executive-ready report in 15 minutes.</h2>
+  <p>Plug in your numbers. EquipROI handles the financial modeling and generates the report your CFO actually wants to see.</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">◈</div>
+      <h3>Complete Financial Analysis</h3>
+      <p>NPV, IRR, simple payback, discounted payback, after-tax cash flows with MACRS depreciation — all calculated automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">◧</div>
+      <h3>Sensitivity Analysis</h3>
+      <p>Best case, worst case, break-even. Show leadership you've stress-tested the numbers, not just the sunny scenario.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">▤</div>
+      <h3>PDF Reports That Impress</h3>
+      <p>One-click export to a branded, executive-ready PDF. Your company logo, professional formatting, clear recommendation.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">↻</div>
+      <h3>Saved Defaults</h3>
+      <p>Set your WACC, tax rate, and depreciation method once. Every new analysis starts pre-loaded with your company's parameters.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Manufacturing-Specific</h3>
+      <p>Built for how manufacturers actually evaluate equipment: labor rates, scrap costs, downtime reduction, throughput gains — not generic financial inputs.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚯</div>
+      <h3>Share & Collaborate</h3>
+      <p>Send a view-only link to your CFO or email the PDF directly. No more emailing spreadsheets back and forth.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="who">
+  <div class="section-label">Built For</div>
+  <h2>Engineers who are tired of fighting spreadsheets to buy equipment.</h2>
+  <p>If you've ever spent three days building a business case that could've taken 20 minutes, this is for you.</p>
+  <div class="who-grid">
+    <div class="who-card">
+      <h3>Manufacturing Engineers</h3>
+      <p>You know the machine you need. Now prove it — with financial rigor that gets the purchase approved on the first review.</p>
+    </div>
+    <div class="who-card">
+      <h3>Plant & Operations Managers</h3>
+      <p>Standardize how your team evaluates capital requests. No more inconsistent spreadsheets and gut-feel estimates.</p>
+    </div>
+    <div class="who-card">
+      <h3>Equipment Distributors</h3>
+      <p>Help your customers justify buying your equipment. Embed a branded ROI calculator on your website and close deals faster.</p>
+    </div>
+    <div class="who-card">
+      <h3>Small & Mid-Size Manufacturers</h3>
+      <p>You don't have a finance team to build business cases. EquipROI gives you Fortune 500 analysis without the Fortune 500 budget.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <h2>Be the first to try EquipROI.</h2>
+  <p>We're launching soon. Early access members get the Pro plan free for 3 months.</p>
+  <form class="email-form" id="waitlistForm2">
+    <input type="email" id="emailInput2" placeholder="you@company.com" required>
+    <button type="submit">Join Waitlist</button>
+  </form>
+  <div class="form-success" id="formSuccess2" style="margin-top: 16px;">
+    You're on the list. We'll be in touch soon.
+  </div>
+  <p class="form-note" id="formNote2">No credit card required. No spam.</p>
+</section>
+
+<footer>
+  &copy; 2026 EquipROI. Built by engineers, for engineers.
+</footer>
+
+<script>
+  // Simple form handling — replace with your actual endpoint
+  function handleForm(formId, successId, noteId) {
+    const form = document.getElementById(formId);
+    const success = document.getElementById(successId);
+    const note = document.getElementById(noteId);
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = form.querySelector('input[type="email"]').value;
+
+      // ── OPTION 1: Google Sheets (free, easy) ──
+      // Replace YOUR_FORM_ID with your Google Form ID
+      // See setup instructions below
+      //
+      // try {
+      //   await fetch('https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse', {
+      //     method: 'POST',
+      //     mode: 'no-cors',
+      //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      //     body: `entry.YOUR_ENTRY_ID=${encodeURIComponent(email)}`
+      //   });
+      // } catch(err) { /* no-cors always "errors" — that's fine */ }
+
+      // ── OPTION 2: Formspree (free up to 50/month) ──
+      // Replace YOUR_FORM_ID with your Formspree form ID
+      //
+      // await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ email: email })
+      // });
+
+      // For now, just show success state
+      console.log('Email captured:', email);
+      form.style.display = 'none';
+      success.style.display = 'block';
+      if (note) note.style.display = 'none';
+    });
+  }
+
+  handleForm('waitlistForm', 'formSuccess', 'formNote');
+  handleForm('waitlistForm2', 'formSuccess2', 'formNote2');
+</script>
+
+</body>
+</html>
